@@ -1,3 +1,4 @@
+# Edit your top module name here
 set top traffic_light
 
 # Don't change anything below this line
