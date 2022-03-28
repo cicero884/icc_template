@@ -18,7 +18,7 @@ SRC=$(filter-out $(SRC_DIR)/CHIP.v, $(shell ls $(SRC_DIR)/*.v))
 TB_SRC=$(SIM_DIR)/ans.txt
 
 # icc, u18, t18
-PROC               =u18
+PROC               =icc
 ifeq ($(PROC), icc)
 	CBDK_DIR         =/usr/cad/lib/CBDK_IC_Contest_v2.1/Verilog
 	CORE_CELL        =tsmc13_neg.v

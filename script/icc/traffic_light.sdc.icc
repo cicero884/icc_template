@@ -17,8 +17,10 @@ set_clock_latency      0.5  [get_clocks clk]
 set_input_transition   0.5  [all_inputs]
 set_clock_transition   0.1  [all_clocks]
 # Basic environment setup
-set_input_delay  $t_in  -clock clk [remove_from_collection [all_inputs] [get_ports clk]] -clock_fall
-set_output_delay 0.5    -clock clk [all_outputs] -clock_fall
+set_input_delay  -max $t_in  -clock clk [remove_from_collection [all_inputs] [get_ports clk]] -clock_fall
+set_input_delay  -min 0  -clock clk [remove_from_collection [all_inputs] [get_ports clk]] -clock_fall
+set_output_delay -max 0.5    -clock clk [all_outputs] -clock_fall
+set_output_delay -min 0  -clock clk [all_outputs] -clock_fall
 set_load         1     [all_outputs]
 set_drive        0.1   [all_inputs]
 
