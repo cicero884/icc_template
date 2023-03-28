@@ -1,6 +1,5 @@
 # author:509
 # lazy & dirty version for emergency run rtl without ordering files
-# Not test synthesize because dont need to synthesize in this homework
 # inspire by WeiCheng14159
 
 # files you dont need to synthesize
@@ -11,8 +10,11 @@ TOP_FILE	=	geofence.sv
 TOP			=	geofence
 # string when you pass
 PASS_STR	=	"ALL PASS"
+
 #constrain
 SDC			=	$(TOP).sdc
+#irun common parameter
+SIM_PARA	=	+access+r +define+FSDB_FILE=\"$(TOP).fsdb\"
 
 all $(TOP): pre syn gate
 .PHONY: all pre syn gate nw clean
@@ -24,11 +26,7 @@ default:
 	@echo "clean	=> Clear file after synthesize"
 
 pre:
-	irun $(TB_TOP_FILE) $(TOP_FILE) \
-		+access+r \
-		+define+SHM_FILE=\"$(TOP).shm\" \
-		+define+FSDB_FILE=\"$(TOP).sdb\" \
-		-append_log
+	irun $(TB_TOP_FILE) $(TOP_FILE) $(SIM_PARA) -append_log
 	mv irun.log pre.log
 	grep -e $(PASS_STR) pre.log
 
@@ -48,9 +46,8 @@ else
 endif
 
 gate: syn/$(TOP)_syn.v
-	irun $(TB_TOP_FILE) syn/$(TOP)_syn.v -v syn/tsmc13_neg.v \
-		+access+r \
-		+define+FSDB_FILE=\"$(TOP).fsdb\" \
+	irun $(TB_TOP_FILE) syn/$(TOP)_syn.v $(SIM_PARA) \
+		-v syn/tsmc13_neg.v \
 		+define+SDF \
 		+define+SDFFILE=\"syn/$(TOP)_syn.sdf\" \
 		-append_log
