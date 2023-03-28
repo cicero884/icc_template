@@ -1,1 +1,0 @@
-/usr/cad/CBDK/CBDK_TSMC018_Arm_f1.0/CIC/Verilog/tsmc18_neg.v
