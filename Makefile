@@ -1,17 +1,20 @@
 # author:509
-# lazy & dirty version for emergency run simulation  without ordering files
+# lazy & dirty version for emergency run rtl without ordering files
+# Not test synthesize because dont need to synthesize in this homework
 # inspire by WeiCheng14159
 
 # files you dont need to synthesize
-TB_TOP_FILE	=	tb.v
+TB_TOP_FILE	=	tb.sv DW_sqrt.v
 # files you want synthesize
-TOP_FILE	=	rails.v
+TOP_FILE	=	geofence.sv
 # top module
-TOP			=	rails
-
+TOP			=	geofence
+# string when you pass
 PASS_STR	=	"ALL PASS"
+#constrain
+SDC			=	$(TOP).sdc
 
-all: pre syn gate
+all $(TOP): pre syn gate
 .PHONY: all pre syn gate nw clean
 default:
 	@echo "pre		=> Run RTL simulation"
@@ -35,13 +38,16 @@ nw:
 
 syn syn/$(TOP)_syn.v:
 ifneq ($(wildcard ./syn),)
-	dcnxt_shell -f syn/syn.tcl | tee syn.log;
+	dc_shell -f syn/syn.tcl -output_log_file syn.log -x \
+	"	set top $(TOP); \
+		set src_file $(TOP_FILE); \
+		set sdc_file $(SDC); \
+	";
 else
 	@echo "syn folder with syn.tcl & tsmc13_neg.v inside require!"
 endif
 
 gate: syn/$(TOP)_syn.v
-	rm syn/$(TOP)_syn.v
 	irun $(TB_TOP_FILE) syn/$(TOP)_syn.v -v syn/tsmc13_neg.v \
 		+access+r \
 		+define+FSDB_FILE=\"$(TOP).fsdb\" \
