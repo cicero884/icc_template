@@ -1,6 +1,5 @@
 # author:509
-# lazy & dirty version for emergency run rtl without ordering files
-# Not test synthesize because dont need to synthesize in this homework
+# lazy & dirty version for emergency run simulation  without ordering files
 # inspire by WeiCheng14159
 
 # files you dont need to synthesize
