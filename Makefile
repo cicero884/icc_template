@@ -38,7 +38,7 @@ syn syn/$(TOP)_syn.v:
 ifneq ($(wildcard ./syn),)
 	dc_shell -f syn/syn.tcl -output_log_file syn.log -x \
 	"	set top $(TOP); \
-		set src_file $(TOP_FILE); \
+		set src_file {$(TOP_FILE)}; \
 		set sdc_file $(SDC); \
 	";
 else
