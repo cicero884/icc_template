@@ -23,8 +23,11 @@ set_structure -timing true
 check_design
 
 # Synthesize (ultimate)
-compile_ultra -no_autoungroup -no_boundary_optimization -retime
-compile_ultra -incremental
+compile_ultra
+optimize_registers
+compile_ultra -incremental -retime
+# compile_ultra -no_autoungroup -no_boundary_optimization -retime
+# compile_ultra -incremental
 
 current_design [get_designs ${top}]
 
