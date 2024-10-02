@@ -26,7 +26,7 @@ default:
 	@echo "clean	=> Clear file after synthesize"
 
 pre:
-	irun $(TB_TOP_FILE) $(TOP_FILE) $(SIM_PARA) -append_log
+	irun $(TB_TOP_FILE) $(TOP_FILE) $(SIM_PARA) -append_log +notimingcheck
 	mv irun.log pre.log
 	grep -e $(PASS_STR) pre.log
 
