@@ -4,9 +4,11 @@ set_host_options -max_cores 16
 # Read all Files
 
 #set top geofence
-read_file -autoread -top ${top} ${src_file} -library ${top}
-current_design ${top}
-link
+analyze ${src_file} -autoread
+elaborate ${top}
+#read_file -autoread -top ${top} ${src_file} -library ${top}
+#current_design ${top}
+#link
 
 # Setting Clock Constraits
 source -echo -verbose ${sdc_file}
