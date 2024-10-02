@@ -27,6 +27,7 @@ default:
 
 pre:
 	vcs -R $(TB_TOP_FILE) $(TOP_FILE) \
+		+notimingcheck \
 		+vcs+fsdbon \
 		+fsdb+mda \
 		+access+R \
