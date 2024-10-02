@@ -26,8 +26,15 @@ default:
 	@echo "clean	=> Clear file after synthesize"
 
 pre:
-	irun $(TB_TOP_FILE) $(TOP_FILE) $(SIM_PARA) -append_log +notimingcheck
-	mv irun.log pre.log
+	vcs -R $(TB_TOP_FILE) $(TOP_FILE) \
+		+vcs+fsdbon \
+		+fsdb+mda \
+		+access+R \
+		+fsdbfile+$(TOP).fsdb \
+		-sverilog \
+		-l $(TOP).log
+	# irun $(TB_TOP_FILE) $(TOP_FILE) $(SIM_PARA) -append_log +notimingcheck
+	# mv irun.log pre.log
 	grep -e $(PASS_STR) pre.log
 
 # please use Ctrl+Z , bg , fg instead add & behind command
@@ -47,12 +54,26 @@ else
 endif
 
 gate: syn/$(TOP)_syn.v
-	irun $(TB_TOP_FILE) syn/$(TOP)_syn.v $(SIM_PARA) \
-		-v syn/tsmc13_neg.v \
+	vcs -R $(TB_TOP_FILE) syn/$(TOP)_syn.v syn/tsmc13_neg.v \
+		-sverilog \
+		-debug_access+all \
+		-diag=sdf:verbose \
+		+vcs+fsdbon \
+		+fsdb+mda \
+		+access+R \
+		+fsdbfile+$(TOP)_syn.fsdb \
+		+neg_tchk \
+		-notice \
+		+lint=TFIPC-L \
+		-debug_region+cell +memcbk \
 		+define+SDF \
-		+define+SDFFILE=\"syn/$(TOP)_syn.sdf\" \
-		-append_log
-	mv irun.log gate.log
+		-l $(TOP)_syn.log
+	#irun $(TB_TOP_FILE) syn/$(TOP)_syn.v $(SIM_PARA) \
+	#	-v syn/tsmc13_neg.v \
+	#	+define+SDF \
+	#	+define+SDFFILE=\"syn/$(TOP)_syn.sdf\" \
+	#	-append_log
+	#mv irun.log gate.log
 
 clean:
 	rm ./*.err ./*.log syn/$(TOP)_syn* *.fsdb irun.history -f
